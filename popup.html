@@ -1,31 +1,18 @@
 <!doctype html>
-<html>
+<html lang="en-US">
   <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
-
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
-     -->
-    <script src="popup.js"></script>
+    <meta charset="utf-8">
+    <title>Company Chrome Extension</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   </head>
   <body>
+    <p>Hello, World!</p>
+    <button class="btn btn-primary">Test</button>
+
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/evernote/evernote-sdk-js/production/evernote-sdk-minified.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="popup.js"></script>
   </body>
 </html>
-

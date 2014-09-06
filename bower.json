@@ -1,0 +1,9 @@
+{
+  "name": "company-chrome-extension",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "evernote": "~1.25.3",
+    "jquery": "~2.1.1"
+  }
+}

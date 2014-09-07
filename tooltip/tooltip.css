@@ -13,25 +13,25 @@
             border-radius: 10px;
          }
 
-         .companyTooltip  p {
+         .companyTooltipInner  p {
             margin: 3px;
          }
 
-         .companyTooltip table {
+         .companyTooltipInner table {
             font-size: 10pt;
             border: none;
          }
 
-         .companyTooltip tr {
+         .companyTooltipInner tr {
             border-bottom: 1px #ccc solid;
          }
 
-         .companyTooltip td {
+         .companyTooltipInner td {
             vertical-align: top;
             border: none;
          }
 
-         .companyTooltip img {
+         .companyTooltipInner img {
             max-width: 100px;
             max-height: 75px;
          }

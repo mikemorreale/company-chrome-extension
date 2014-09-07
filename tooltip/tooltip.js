@@ -63,7 +63,7 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                   //console.log('hovering');
                   $('.companyTooltip').remove(); 
                   var companyName = $(this).attr('CompanyName');
-                  $('<span class="companyTooltip"></span>').html(companyTooltipInfo[companyName])
+                  $('<span class="companyTooltip companyTooltipInner"></span>').html(companyTooltipInfo[companyName])
                      .appendTo('body')
                      .css('top', (event.pageY-10) + 'px')
                      .css('left', (event.pageX-30) + 'px')
@@ -90,9 +90,18 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                 var companyName = companyObj['name'];
                 console.log(companyName + ' info finished loading');
 
-                var html = '<center><p><div class="companyImgdiv"><img src=' + companyObj['imageURL'] + '></div></p>'; 
-                html += '<p><b><font size="+1">' + companyName + '</font></b>' + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' + companyObj['crunchbaseLink'] + '" target="_blank">(CB)</a>' + '</p>';
-                html += '<p><a href="' + companyObj['homepageURL'] + '" target="_blank">' + companyObj['homepageURL'] + '</a></p>';
+                var html = CreateCrunchbaseHTML(companyObj);
+
+                companyTooltipInfo[companyName] = html;
+               }
+            });
+         }
+          
+
+function CreateCrunchbaseHTML(companyObj){
+  var html = '<center><p class="cb-title-info"><div class="companyImgdiv"><img src=' + companyObj['imageURL'] + '></div></p>'; 
+                html += '<p class="cb-title-info"><b><font size="+1">' + companyObj['name'] + '</font></b>' + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' + companyObj['crunchbaseLink'] + '" target="_blank">(CB)</a>' + '</p>';
+                html += '<p class="cb-title-info"><a href="' + companyObj['homepageURL'] + '" target="_blank">' + companyObj['homepageURL'] + '</a></p>';
                 html += '<p class="cb-description-text">"' + companyObj['description'] + '"</p></center>';
                 html += '<table cellspacing=8>';
                 if (companyObj['numberOfEmployees'])
@@ -103,12 +112,22 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                 html += '<tr><td><b>Categories </b></td><td class="pull-right"> ' + companyObj['categories'] + '</td></tr>';
                 html += '</table>';
 
-                companyTooltipInfo[companyName] = html;
-               }
-            });
-         }
-          
-         function ParseCrunchbaseData(data) {
+                return html;
+}         
+
+
+function getText(target) {
+    var wordArr = [];
+    $('*',target).add(target).each(function(k,v) {
+        var words  = $('*',v.cloneNode(true)).remove().end().text().split(/(\s+|\n)/);
+        wordArr = wordArr.concat(words.filter(function(n){
+          return n.trim()}));
+    });
+    return wordArr;
+}
+
+
+function ParseCrunchbaseData(data) {
              var c = {};
              
              var properties = data['data']['properties']; 
@@ -193,14 +212,3 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
              
              return c;
          }
-
-
-function getText(target) {
-    var wordArr = [];
-    $('*',target).add(target).each(function(k,v) {
-        var words  = $('*',v.cloneNode(true)).remove().end().text().split(/(\s+|\n)/);
-        wordArr = wordArr.concat(words.filter(function(n){
-          return n.trim()}));
-    });
-    return wordArr;
-}

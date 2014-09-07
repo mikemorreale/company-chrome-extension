@@ -5,7 +5,13 @@ var oauth = OAuth({
   callbackUrl: document.URL + '?company-chrome-extension=true',
   signatureMethod: 'HMAC-SHA1',
 });
-var authToken = localStorage.getItem('auth_token');
+
+var authToken;
+chrome.storage.sync.get('auth_token', function (data) {
+  authToken = data;
+});
+
+var companyName;
 
 function init(sidebar) {
   $('body').prepend(sidebar);
@@ -41,7 +47,7 @@ function init(sidebar) {
   $('.create-note').click(function () {
     var data = {
       authToken: authToken,
-      title: $('.evernote-title').val(),
+      title: companyName,
       body: $('.evernote-body').val()
     };
 
@@ -113,7 +119,7 @@ function evernoteSuccess(data) {
       var y = vars[i].split('=');
       if (y[0] === 'oauth_token') {
         authToken = decodeURIComponent(y[1]);
-        localStorage.setItem('auth_token', decodeURIComponent(y[1]));
+        chrome.storage.sync.set({'auth_token': decodeURIComponent(y[1])}, function () {});
       }
     }
 
@@ -161,24 +167,35 @@ function getCrunchbaseFromUrl(url_query) {
 
 function FillCrunchbaseData(data) {
   $('.cb-loading-circle').hide();
+
   var return_object = ParseCrunchbaseData(data);
   var final_html = CreateCrunchbaseHTML(return_object);
+  
   $(".cb-loaded-data").html(final_html);
   $(".companyImgdiv").remove();
   $(".cb-title-info").remove();
+
   AddCrunchbaseNews(data);
   AddHQWeather(data);
+
+  companyName = return_object['name'];
+  $('.evernote-title').val(companyName);
 }
 
 function AddCrunchbaseNews(data) {
-  var news = data['data']['relationships']['news']['items'];
+  try {
+    var news = data['data']['relationships']['news']['items'];
+  } catch (err) {
+    return false;
+  }
+
   var press_table = '<div class="cb-header">Recent News</div><table class="cb-newsTable">';
-  $.each(news,function(index,value){
+  $.each(news,function (index,value) {
     var title = value['title'];
     var url = value['url'];
     var date = value['posted_on'];
     press_table += '<tr><td width="60">' + date + '</td><td><a href="' + url + '" target="_blank">' + title + '</a></td></tr>';
-    return index<2;
+    return index < 2;
   });
   press_table+= '</table>';
   $('.cb-loaded-data').append(press_table);
@@ -199,7 +216,7 @@ function getCurrentWeather(state, city) {
     url: url,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       var weather = data['current_observation'];
       var icon_url = weather['icon_url'];
       var current_temp = weather['temp_f'];

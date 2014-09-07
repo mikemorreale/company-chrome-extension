@@ -19,9 +19,16 @@
 
          .companyTooltip table {
             font-size: 10pt;
+            border: none;
          }
+
+         .companyTooltip tr {
+            border-bottom: 1px #ccc solid;
+         }
+
          .companyTooltip td {
             vertical-align: top;
+            border: none;
          }
 
          .companyTooltip img {
@@ -39,4 +46,14 @@
    padding: 3px;
    border-radius: 3px;
    background: #FBFFB7;
+}
+
+.pull-right{
+   text-align: right;
+}
+
+.cb-description-text{
+   font-size:11px;
+   text-align: left;
+
 }

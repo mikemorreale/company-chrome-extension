@@ -91,16 +91,16 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                 console.log(companyName + ' info finished loading');
 
                 var html = '<center><p><div class="companyImgdiv"><img src=' + companyObj['imageURL'] + '></div></p>'; 
-                html += '<p><b><font size="+1">' + companyName + '</font></b></p>';
-                html += '<p><a href="' + companyObj['homepageURL'] + '">' + companyObj['homepageURL'] + '</a></p>';
-                html += '<p>"' + companyObj['description'] + '"</p></center>';
+                html += '<p><b><font size="+1">' + companyName + '</font></b>' + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' + companyObj['crunchbaseLink'] + '" target="_blank">(CB)</a>' + '</p>';
+                html += '<p><a href="' + companyObj['homepageURL'] + '" target="_blank">' + companyObj['homepageURL'] + '</a></p>';
+                html += '<p class="cb-description-text">"' + companyObj['description'] + '"</p></center>';
                 html += '<table cellspacing=8>';
                 if (companyObj['numberOfEmployees'])
-                   html += '<tr><td width=100><p><b>Employees</b></p></td><td>' + companyObj['numberOfEmployees'] + '</td></tr>';
-                html += '<tr><td><b>Founded On </b></td><td>' + companyObj['foundedOn'] + '</td></tr>';
-                html += '<tr><td><b>Funding (USD) </b></td><td>' + companyObj['totalFundingUSD'] + '</td></tr>';
-                html += '<tr><td><b>Headquarters </b></td><td> ' + companyObj['hqLocation'] + '</td></tr>';
-                html += '<tr><td><b>Categories </b></td><td> ' + companyObj['categories'] + '</td></tr>';
+                   html += '<tr><td><b>Employees</b></td><td class="pull-right">' + companyObj['numberOfEmployees'] + '</td></tr>';
+                html += '<tr><td><b>Founded On </b></td><td class="pull-right">' + companyObj['foundedOn'] + '</td></tr>';
+                html += '<tr><td><b>Funding (USD) </b></td><td class="pull-right">' + companyObj['totalFundingUSD'] + '</td></tr>';
+                html += '<tr><td><b>Headquarters </b></td><td class="pull-right"> ' + companyObj['hqLocation'] + '</td></tr>';
+                html += '<tr><td><b>Categories </b></td><td class="pull-right"> ' + companyObj['categories'] + '</td></tr>';
                 html += '</table>';
 
                 companyTooltipInfo[companyName] = html;
@@ -171,6 +171,8 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
              } catch(err) {
                c['imageURL'] = '';
              }
+
+             c['crunchbaseLink'] = data['metadata']['www_path_prefix'] + "organization/" + data['data']['properties']['permalink'];
 
 
              try {

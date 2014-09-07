@@ -18,6 +18,8 @@ function init(sidebar) {
 
   $('body').prepend(sidebar);
 
+  getCrunchbaseFromUrl(window.location.hostname);
+
   setTimeout(function () {
     $('.cb-sidebar').removeClass('hidden');
   }, 200);
@@ -118,3 +120,62 @@ function failure(error) {
   console.log('error: ' + error.text);
 }
 
+
+function getCrunchbaseFromUrl(url_query){
+	var apiKey = 'a554e04effee9e09ee61679a344041c2';
+	var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organizations?query=';
+	var lookupUrlPrefix2 = 'http://api.crunchbase.com/v/2/';
+	var url = lookupUrlPrefix + url_query + '&user_key=' + apiKey;
+	$.ajax({ 
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		success: function(data) {
+			// if found for URL, go get the actual data
+			console.log(data);
+			try {
+				var path = data['data']['items'][0]['path']
+			} catch(err) {
+				var path = 0;
+			}
+			if (path == 0) {
+				// NOT FOUND
+			} else {
+				var url2 = lookupUrlPrefix2 + path + '?user_key=' + apiKey;
+				$.ajax({ 
+					url: url2,
+					type: 'GET',
+					dataType: 'json',
+					success: function(data) {
+						FillCrunchbaseData(data);
+					}
+				});
+			}
+		}
+	});
+}
+
+function FillCrunchbaseData(data) {
+	console.log(data);
+	$('.cb-loading-circle').hide();
+	var return_object = ParseCrunchbaseData(data);
+	var final_html = CreateCrunchbaseHTML(return_object);
+	$(".cb-loaded-data").html(final_html);
+	$(".companyImgdiv").remove();
+	$(".cb-title-info").remove();
+	AddCrunchbaseNews(data);
+}
+
+function AddCrunchbaseNews(data) {
+	var news = data['data']['relationships']['news']['items'];
+	var press_table = '<div class="cb-header">Recent News</div><table class="cb-newsTable">';
+	$.each(news,function(index,value){
+		var title = value['title'];
+		var url = value['url'];
+		var date = value['posted_on'];
+		press_table += '<tr><td width="60">' + date + '</td><td><a href="' + url + '" target="_blank">' + title + '</a></td></tr>';
+		return index<2;
+	});
+	press_table+= '</table>';
+	$('.cb-loaded-data').append(press_table);
+}

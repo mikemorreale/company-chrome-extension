@@ -49,10 +49,10 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                foundin.each(function(index, value){
                 //console.log(value);
                   var replaced = $(value).html()
-                       .replace(new RegExp(company, 'g'), '<span class="CompanyExt" CompanyName="' + company + '">' + company + '</span>');
+                       .replace(new RegExp(' ' + company + ' ', 'g'), '<span class="CompanyExt" CompanyName="' + company + '">' + company + '</span>');
                   $(value).html(replaced);
-                  LoadCompanyInfo(company);
                });
+               LoadCompanyInfo(company);
             });
 
             console.log('finished looping');
@@ -60,18 +60,18 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
             // Load tooltip with company info for each company
             $('.CompanyExt').hover(
                function(event) {
-                  console.log('hovering');
+                  //console.log('hovering');
                   $('.companyTooltip').remove(); 
                   var companyName = $(this).attr('CompanyName');
-                  $('<span class="companyTooltip"></span>').html(companyTooltipInfo[companyName])
+                  $('<span class="companyTooltip companyTooltipInner"></span>').html(companyTooltipInfo[companyName])
                      .appendTo('body')
                      .css('top', (event.pageY-10) + 'px')
                      .css('left', (event.pageX-30) + 'px')
                      .fadeIn('fast');
                    
                    // tooltip will appear under mouse.  when mouse moves off of tooltip it will disappear.. this allows link to be clickable
-                   $('.companyTooltip').hover(function(event) {console.log('hovering 2');}, function(event) {
-                      $('.companyTooltip').remove(); // called on hoverOut
+                   $('.companyTooltip').hover(function(event) {}, function(event) {
+                      //$('.companyTooltip').remove(); // called on hoverOut
                    });   
                });
          }     
@@ -90,53 +90,30 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                 var companyName = companyObj['name'];
                 console.log(companyName + ' info finished loading');
 
-                var html = '<center><p><div class="companyImgdiv"><img src=' + companyObj['imageURL'] + '></div></p>'; 
-                html += '<p><b><font size="+1">' + companyName + '</font></b></p>';
-                html += '<p><a href="' + companyObj['homepageURL'] + '">' + companyObj['homepageURL'] + '</a></p>';
-                html += '<p>"' + companyObj['description'] + '"</p></center>';
-                html += '<table cellspacing=8>';
-                if (companyObj['numberOfEmployees'])
-                   html += '<tr><td width=100><p><b>Employees</b></p></td><td>' + companyObj['numberOfEmployees'] + '</td></tr>';
-                html += '<tr><td><b>Founded On </b></td><td>' + companyObj['foundedOn'] + '</td></tr>';
-                html += '<tr><td><b>Funding (USD) </b></td><td>' + companyObj['totalFundingUSD'] + '</td></tr>';
-                html += '<tr><td><b>Headquarters </b></td><td> ' + companyObj['hqLocation'] + '</td></tr>';
-                html += '<tr><td><b>Categories </b></td><td> ' + companyObj['categories'] + '</td></tr>';
-                html += '</table>';
+                var html = CreateCrunchbaseHTML(companyObj);
 
                 companyTooltipInfo[companyName] = html;
                }
             });
          }
           
-         function ParseCrunchbaseData(data) {
-             var c = {};
-             
-             var properties = data['data']['properties']; 
 
-             c['name'] = properties['name'];
-             c['description'] =  properties['short_description'];
-             c['homepageURL'] =  properties['homepage_url'];
-             c['foundedOn'] =  properties['founded_on'];
-             c['numberOfEmployees'] = properties['number_of_employees'];
-             if (c['numberOfEmployees']) {
-                c['numberOfEmployees'] = c['numberOfEmployees'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-             }
-             c['totalFundingUSD'] = properties['total_funding_usd'];
-             if (c['totalFundingUSD']) {
-                c['totalFundingUSD'] = c['totalFundingUSD'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-             }
-             c['imageURL'] = data['metadata']['image_path_prefix'] + data['data']['relationships']['primary_image']['items'][0]['path'];
-             try {
-               var hq = data['data']['relationships']['headquarters']['items'][0];
-             } catch(err) {
-              var hq = '';
-             }
-             c['hqLocation'] = hq['city'] + ', ' + hq['region'];
-             var categories = data['data']['relationships']['categories']['items'];
-             c['categories'] = $.map(categories, function (val, i) { return val['name']; }).join(', ');
-             
-             return c;
-         }
+function CreateCrunchbaseHTML(companyObj){
+  var html = '<center><p class="cb-title-info"><div class="companyImgdiv"><img src=' + companyObj['imageURL'] + '></div></p>'; 
+                html += '<p class="cb-title-info"><b><font size="+1">' + companyObj['name'] + '</font></b>' + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' + companyObj['crunchbaseLink'] + '" target="_blank">(CB)</a>' + '</p>';
+                html += '<p class="cb-title-info"><a href="' + companyObj['homepageURL'] + '" target="_blank">' + companyObj['homepageURL'] + '</a></p>';
+                html += '<p class="cb-description-text">"' + companyObj['description'] + '"</p></center>';
+                html += '<table cellspacing=8>';
+                if (companyObj['numberOfEmployees'])
+                   html += '<tr><td><b>Employees</b></td><td class="pull-right">' + companyObj['numberOfEmployees'] + '</td></tr>';
+                html += '<tr><td><b>Founded On </b></td><td class="pull-right">' + companyObj['foundedOn'] + '</td></tr>';
+                html += '<tr><td><b>Funding (USD) </b></td><td class="pull-right">' + companyObj['totalFundingUSD'] + '</td></tr>';
+                html += '<tr><td><b>Headquarters </b></td><td class="pull-right"> ' + companyObj['hqLocation'] + '</td></tr>';
+                html += '<tr><td><b>Categories </b></td><td class="pull-right"> ' + companyObj['categories'] + '</td></tr>';
+                html += '</table>';
+
+                return html;
+}         
 
 
 function getText(target) {
@@ -148,3 +125,90 @@ function getText(target) {
     });
     return wordArr;
 }
+
+
+function ParseCrunchbaseData(data) {
+             var c = {};
+             
+             var properties = data['data']['properties']; 
+
+             try {
+             c['name'] = properties['name'];
+             } catch(err) {
+               c['name'] = '';
+             }
+             
+             try {
+             c['description'] =  properties['short_description'];
+             } catch(err) {
+               c['description'] = '';
+             }
+             
+             try {
+             c['homepageURL'] =  properties['homepage_url'];
+             } catch(err) {
+               c['homepageURL'] = '';
+             }
+             
+             try {
+             c['foundedOn'] =  properties['founded_on'];
+             } catch(err) {
+               c['foundedOn'] = '';
+             }
+             
+             try {
+             c['numberOfEmployees'] = properties['number_of_employees'];
+             } catch(err) {
+               c['numberOfEmployees'] = '';
+             }
+             
+             try {
+             if (c['numberOfEmployees']) {
+                c['numberOfEmployees'] = c['numberOfEmployees'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+             }
+              } catch(err) {
+               c['numberOfEmployees'] = '';
+             }
+
+             
+             try {
+             c['totalFundingUSD'] = properties['total_funding_usd'];
+             } catch(err) {
+               c['totalFundingUSD'] = '';
+             }
+             
+             try {
+             if (c['totalFundingUSD']) {
+                c['totalFundingUSD'] = c['totalFundingUSD'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+             }
+             } catch(err) {
+               c['totalFundingUSD'] = '';
+             }
+
+             try {
+             c['imageURL'] = data['metadata']['image_path_prefix'] + data['data']['relationships']['primary_image']['items'][0]['path'];
+             } catch(err) {
+               c['imageURL'] = '';
+             }
+
+             c['crunchbaseLink'] = data['metadata']['www_path_prefix'] + "organization/" + data['data']['properties']['permalink'];
+
+
+             try {
+               var hq = data['data']['relationships']['headquarters']['items'][0];
+             } catch(err) {
+              var hq = '';
+             }
+
+             try {
+             c['hqLocation'] = hq['city'] + ', ' + hq['region'];
+             } catch(err) {
+               c['hqLocation'] = '';
+             }
+             
+             var categories = data['data']['relationships']['categories']['items'];
+             
+             c['categories'] = $.map(categories, function (val, i) { return val['name']; }).join(', ');
+             
+             return c;
+         }

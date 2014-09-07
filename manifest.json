@@ -15,8 +15,11 @@
     "page": "background.html"
   },
   "content_scripts": [{
-    "css": ["css/main.css"],
-    "js": ["bower_components/jquery/dist/jquery.js", "scripts.js"],
+    "css": ["css/main.css", "bower_components/bootstrap/dist/css/bootstrap.min.css", "bower_components/font-awesome/css/font-awesome.min.css"],
+    "js": ["bower_components/jquery/dist/jquery.js", "scripts.js", "bower_components/bootstrap/dist/js/bootstrap.min.js"],
     "matches": ["http://*/*", "https://*/*"]
- }]
+  }],
+  "web_accessible_resources":[
+    "bower_components/font-awesome/fonts/*"
+  ]
 }

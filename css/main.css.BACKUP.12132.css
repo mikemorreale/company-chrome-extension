@@ -47,6 +47,7 @@
 	border-bottom: 1px #ccc solid!important;
 }
 
+<<<<<<< HEAD
 .cb-newsTable{
 	font-size:10px!important;
 }
@@ -54,3 +55,8 @@
 .wu-cb-styles a:hover{
 	text-decoration: none!important;
 }
+=======
+.cb-newsTable {
+	font-size: 10px!important;
+}
+>>>>>>> 9786cbb417c9f69a589fa2922e05287349d9b893

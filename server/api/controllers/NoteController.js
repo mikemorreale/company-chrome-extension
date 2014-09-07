@@ -8,6 +8,21 @@
 var Evernote = require('evernote').Evernote;
 
 module.exports = {
+  find: function (req, res) {
+    var client = new Evernote.Client({token: decodeURIComponent(req.query.authToken), sandbox: true});
+    var noteStore = client.getNoteStore();
+   
+    var noteFilter = new Evernote.NoteFilter();
+    noteFilter.words = req.query.companyName;
+
+    noteStore.findNotes(noteFilter, 0, 100, function (err, notes) {
+      if (err) {
+        res.send(400);
+      } else {
+        res.send(notes.notes[0]);
+      }
+    });
+  },
   create: function (req, res) {
     var params = req.params.all();
 
@@ -20,7 +35,7 @@ module.exports = {
     newNote.title = params.title;
     newNote.content = nBody;
 
-    var client = new Evernote.Client({token: params.authToken, sandbox: true});
+    var client = new Evernote.Client({token: decodeURIComponent(params.authToken), sandbox: true});
     var noteStore = client.getNoteStore();
    
     // Attempt to create note in Evernote account

@@ -1,5 +1,3 @@
-
-console.log('loading co names');
 var companyNames = ["Google",
  "Microsoft",
  "Facebook",

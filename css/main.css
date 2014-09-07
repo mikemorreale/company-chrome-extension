@@ -63,3 +63,12 @@
 .cb-header a:hover{
 	text-decoration: none;
 }
+
+.cb-crunchbase-info-table{
+	width:100%;
+}
+
+.cb-sidebar p {
+	color: #000;
+	line-height: normal;
+}

@@ -23,7 +23,7 @@ function init(sidebar) {
 
   setTimeout(function () {
     $('.cb-sidebar').removeClass('hidden');
-  }, 200);
+  }, 50);
 
   $('.cb-sidebar-close').click(function () {
     $('.cb-sidebar').addClass('hidden');

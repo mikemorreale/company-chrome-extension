@@ -5,7 +5,7 @@ var oauth = OAuth({
     callbackUrl: document.URL + '?company-chrome-extension=true',
     signatureMethod: 'HMAC-SHA1',
 });
-var oauthToken;
+var authToken;
 var noteStoreUrl;
 
 function init(sidebar) {
@@ -58,10 +58,17 @@ function init(sidebar) {
   });
   
   $('.create-note').click(function () {
-    var noteTitle = $('.evernote-title').text();
-    var noteBody = $('.evernote-body').text();
+    var data = {
+      authToken: authToken,
+      title: $('.evernote-title').val(),
+      body: $('.evernote-body').val()
+    };
 
-    createNote(noteStoreUrl, noteTitle, noteBody, null, function (note) {});
+    $.ajax({
+      url: 'http://localhost:1337/note',
+      type: 'POST',
+      data: data
+    });
   });
 
   showEvernoteButton();
@@ -72,34 +79,6 @@ function showEvernoteButton() {
     $('.cb-authorize-evernote').show();
     $('.create-note').show();
   }
-}
-
-function createNote(noteStore, noteTitle, noteBody, parentNotebook, callback) {
-  var nBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-  nBody += "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">";
-  nBody += "<en-note>" + noteBody + "</en-note>";
- 
-  // Create note object
-  var ourNote = new Evernote.Note();
-  ourNote.title = noteTitle;
-  ourNote.content = nBody;
- 
-  // parentNotebook is optional; if omitted, default notebook is used
-  if (parentNotebook && parentNotebook.guid) {
-    ourNote.notebookGuid = parentNotebook.guid;
-  }
- 
-  // Attempt to create note in Evernote account
-  noteStore.createNote(ourNote, function (err, note) {
-    if (err) {
-      // Something was wrong with the note data
-      // See EDAMErrorCode enumeration for error code explanation
-      // http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
-      console.log(err);
-    } else {
-      callback(note);
-    }
-  });
 }
 
 function success(data) {
@@ -127,7 +106,7 @@ function success(data) {
     for (var i = 0; i < vars.length; i++) {
       var y = vars[i].split('=');
       if (y[0] === 'oauth_token') {
-        oauthToken = decodeURIComponent(y[1]);
+        authToken = decodeURIComponent(y[1]);
       } else if (y[0] === 'edam_noteStoreUrl') {
         noteStoreUrl = decodeURIComponent(y[1]);
       }

@@ -1,3 +1,7 @@
 chrome.browserAction.onClicked.addListener(function () {
-  $('body').append('<div>hi</div>');
+  var sidebar = $('.sidebar').load('sidebar.html').html().trim();
+
+  chrome.tabs.executeScript(null, {
+    code: 'start(\'' + sidebar + '\')'
+  });
 });

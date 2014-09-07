@@ -13,5 +13,10 @@
   },
   "background": {
     "page": "background.html"
-  }
+  },
+  "content_scripts": [{
+    "css": ["css/main.css"],
+    "js": ["bower_components/jquery/dist/jquery.js", "scripts.js"],
+    "matches": ["http://*/*", "https://*/*"]
+ }]
 }

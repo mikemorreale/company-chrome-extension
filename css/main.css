@@ -1,8 +1,4 @@
-.test {
-  color: red;
-}
-
-.cb-sidebar{
+.cb-sidebar {
 	z-index: 999999999;
 	position: fixed;
 	right: 0;
@@ -14,7 +10,7 @@
 	padding: 5px;
 }
 
-.cb-sidebar-close{
+.cb-sidebar-close {
 	padding: 5px;
 	position: absolute;
 	right: 0;

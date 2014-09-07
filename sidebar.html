@@ -1,16 +1,11 @@
-<div class="cb-sidebar" style="display:none">
+<div class="cb-sidebar" style="display: none">
 	<div class="cb-sidebar-close">
 		<i class="fa fa-times"></i>
 	</div>
-	<div>Hello</div>
-
-	<div id="deviceready" class="blink">
-	    <p class="event listening">Connecting to Device</p>
-	    <p class="event received">Device is Ready</p>
-	    <!-- Clicking "Click Me" will call app.loginWithEvernote() -->
-	    <input type="submit" value="Login" onClick="app.loginWithEvernote()"</input>
-	</div>
-
-	<input type="button" class="cb-authorize-evernote" value="Authorize Evernote" />
-
+	<input type="button" class="cb-authorize-evernote" value="Authorize Evernote">
+	<input type="text" class="evernote-title">
+	<br>
+	<textarea class="evernote-body"></textarea>
+	<br>
+	<input type="button" class="create-note" value="Create note" style="display: none;">
 </div>

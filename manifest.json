@@ -15,9 +15,21 @@
     "page": "background.html"
   },
   "content_scripts": [{
-    "css": ["css/main.css", "bower_components/font-awesome/css/font-awesome.min.css"],
-    "js": ["bower_components/jquery/dist/jquery.js", "bower_components/bootstrap/dist/js/bootstrap.min.js", "lib/jsOAuth-1.3.6.min.js", "scripts.js"],
-    "matches": ["http://*/*", "https://*/*"]
+    "css": [
+      "css/main.css",
+      "bower_components/font-awesome/css/font-awesome.min.css"
+    ],
+    "js": [
+      "bower_components/jquery/dist/jquery.js",
+      "bower_components/bootstrap/dist/js/bootstrap.min.js",
+      "lib/jsOAuth-1.3.6.min.js",
+      "bower_components/evernote/evernote-sdk-js/production/evernote-sdk-minified.js",
+      "scripts.js"
+    ],
+    "matches": [
+      "http://*/*",
+      "https://*/*"
+    ]
   }],
   "web_accessible_resources":[
     "bower_components/font-awesome/fonts/*"

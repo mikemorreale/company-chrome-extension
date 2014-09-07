@@ -8,9 +8,16 @@ var oauth = OAuth({
 var authToken = localStorage.getItem('auth_token');
 
 function init(sidebar) {
+  $('body').prepend(sidebar);
+
   fontAwesomeSetup();
 
-  $('body').prepend(sidebar);
+  if (authToken) {
+    $('.authorize-evernote').hide();
+    $('.create-note').show();
+  } else {
+    evernoteSetup();
+  }
 
   getCrunchbaseFromUrl(window.location.hostname);
   getWayBackData(window.location.hostname);
@@ -27,8 +34,8 @@ function init(sidebar) {
     }, 500);
   });
 
-  $('.cb-authorize-evernote').click(function () {
-    oauth.request({'method': 'GET', 'url': evernoteHostName + '/oauth', 'success': success, 'failure': failure});
+  $('.authorize-evernote').click(function () {
+    oauth.request({'method': 'GET', 'url': evernoteHostName + '/oauth', 'success': evernoteSuccess, 'failure': evernoteFailure});
   });
   
   $('.create-note').click(function () {
@@ -44,13 +51,6 @@ function init(sidebar) {
       data: data
     });
   });
-
-  if (authToken) {
-    $('.cb-authorize-evernote').hide();
-    $('.create-note').show();
-
-    evernoteSetup();
-  }
 }
 
 function fontAwesomeSetup() {
@@ -80,14 +80,14 @@ function evernoteSetup() {
 
     if (oauthVerifier && oauthToken) {
       oauth.setVerifier(oauthVerifier);
-      oauth.setAccessToken([oauthToken, localStorage.getItem("oauth_token_secret")]);
+      oauth.setAccessToken([oauthToken, localStorage.getItem('oauth_token_secret')]);
 
-      oauth.request({'method': 'GET', 'url': evernoteHostName + '/oauth', 'success': success, 'failure': failure});
+      oauth.request({'method': 'GET', 'url': evernoteHostName + '/oauth', 'success': evernoteSuccess, 'failure': evernoteFailure});
     }
   }
 }
 
-function success(data) {
+function evernoteSuccess(data) {
   var isCallBackConfirmed = false;
   var token = '';
 
@@ -113,13 +113,16 @@ function success(data) {
       var y = vars[i].split('=');
       if (y[0] === 'oauth_token') {
         authToken = decodeURIComponent(y[1]);
-        localStorage.setItem('auth_token', y[1]);
+        localStorage.setItem('auth_token', decodeURIComponent(y[1]));
       }
     }
+
+    $('.authorize-evernote').hide();
+    $('.create-note').show();
   }
 }
 
-function failure(error) {
+function evernoteFailure(error) {
   console.log('error: ' + error.text);
 }
 
@@ -132,7 +135,7 @@ function getCrunchbaseFromUrl(url_query) {
     url: url,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       // if found for URL, go get the actual data
       try {
         var path = data['data']['items'][0]['path']
@@ -147,7 +150,7 @@ function getCrunchbaseFromUrl(url_query) {
           url: url2,
           type: 'GET',
           dataType: 'json',
-          success: function(data) {
+          success: function (data) {
             FillCrunchbaseData(data);
           }
         });

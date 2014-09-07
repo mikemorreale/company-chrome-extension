@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "One-click Kittens",
-  "description": "This extension demonstrates a browser action with kittens.",
+  "name": "ChromeCrunch",
+  "description": "Chrome add-on to access key CrunchBase data and take notes on company sites. Accelerate and organize your research.",
   "version": "1.0",
 
   "permissions": [

@@ -4,7 +4,8 @@
 	right: 0!important;
 	z-index: 999999999!important;
 	height: 100%!important;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	background: rgba(255, 255, 255, 0.92)!important;
 }
 
@@ -22,6 +23,7 @@
   -moz-transition: left 1s!important;
   -o-transition: left 1s!important;
   transition: left 1s!important;
+  overflow-x: hidden;
 }
 
 .hidden > #cb-sidebar-container {
@@ -55,21 +57,20 @@
 }
 
 .create-note {
-	background: #2DBE60;
-	border:1px solid #268a16;
-	width: 90%;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	color:#306108;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	font-style:normal;
-	line-height:65px;
-	text-decoration:none;
-	text-align:center;
-	text-shadow:1px 1px 0px #aade7c; 
+	background: rgba(45, 190, 96, 0.8)!important;
+	border:1px solid #268a16!important;
+	width: 90%!important;
+	display: block!important;
+	margin-left: auto!important;
+	margin-right: auto!important;
+	color:#fff!important;
+	font-family:Arial!important;
+	font-size:15px!important;
+	font-weight:bold!important;
+	font-style:normal!important;
+	line-height:25px!important;
+	text-decoration:none!important;
+	text-align:center!important;
 }
 
 .cb-loading-circle {

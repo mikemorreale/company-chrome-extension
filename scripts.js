@@ -18,9 +18,16 @@ function init(sidebar) {
 
   $('body').prepend(sidebar);
 
-  $('.cb-sidebar').show();
+  setTimeout(function () {
+    $('.cb-sidebar').removeClass('hidden');
+  }, 200);
+
   $('.cb-sidebar-close').click(function () {
-    $('.cb-sidebar').remove();
+    $('.cb-sidebar').addClass('hidden');
+
+    setTimeout(function () {
+      $('.cb-sidebar').remove();
+    }, 500);
   });
 
   var url = document.URL;

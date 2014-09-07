@@ -6,7 +6,8 @@
   "version": "1.0",
 
   "permissions": [
-    "http://sandbox.evernote.com/"
+    "http://sandbox.evernote.com/",
+    "storage"
   ],
   "browser_action": {
     "default_icon": "icon.png"
@@ -17,13 +18,16 @@
   "content_scripts": [{
     "css": [
       "css/main.css",
-      "bower_components/font-awesome/css/font-awesome.min.css"
+      "bower_components/font-awesome/css/font-awesome.min.css",
+      "tooltip/tooltip.css"
     ],
     "js": [
       "bower_components/jquery/dist/jquery.js",
       "bower_components/bootstrap/dist/js/bootstrap.min.js",
       "lib/jsOAuth-1.3.6.min.js",
       "bower_components/evernote/evernote-sdk-js/production/evernote-sdk-minified.js",
+      "tooltip/companyNames.js",
+      "tooltip/tooltip.js",
       "scripts.js"
     ],
     "matches": [

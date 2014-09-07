@@ -1,16 +1,35 @@
-.cb-sidebar {
-	z-index: 999999999;
+.test {
+  color: red;
+}
+
+.cb-sidebar{
 	position: fixed;
+	top: 0;
 	right: 0;
+	z-index: 999999999;
+	height: 100%;
+}
+
+#cb-sidebar-container{
+	left: 0%;
 	width: 300px;
 	height: 100%;
 	background: rgba(255, 255, 255, 0.92);
 	border-left: 2px #ccc solid;
 	box-shadow: -5px 0px 10px 1px #EBEBEB;
 	padding: 5px;
+	transition: all 0.5s ease;
+  position: relative;
+  
+  -webkit-transition: left 1s;
+  -moz-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
 }
 
-.cb-sidebar-close {
+.hidden > #cb-sidebar-container { left: 200%; }
+
+.cb-sidebar-close{
 	padding: 5px;
 	position: absolute;
 	right: 0;

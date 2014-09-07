@@ -4,18 +4,19 @@
 	right: 0!important;
 	z-index: 999999999!important;
 	height: 100%!important;
+	overflow: scroll;
+	background: rgba(255, 255, 255, 0.92)!important;
 }
 
 #cb-sidebar-container {
 	left: 0%!important;
 	width: 350px!important;
 	height: 100%!important;
-	background: rgba(255, 255, 255, 0.92)!important;
 	border-left: 2px #ccc solid!important;
 	box-shadow: -5px 0px 10px 1px #EBEBEB!important;
 	padding: 5px!important;
 	transition: all 0.5s ease!important;
-  position: relative!important;
+    position: relative!important;
   
   -webkit-transition: left 1s!important;
   -moz-transition: left 1s!important;
@@ -35,6 +36,41 @@
 	cursor: pointer!important;
 }
 
+.evernote-body {
+	border: 2px;
+	margin: 15px;
+	padding: 10px;
+	width: 90%;
+	height: 100px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 0 0 10px #719ECE;
+}
+
+.evernote-body:focus {
+    outline: none !important;
+    border:1px solid red;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+.create-note {
+	background: #2DBE60;
+	border:1px solid #268a16;
+	width: 90%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	color:#306108;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	line-height:65px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #aade7c; 
+}
 
 .cb-loading-circle {
 	width: 300px!important;

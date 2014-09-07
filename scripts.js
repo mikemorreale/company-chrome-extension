@@ -47,16 +47,14 @@ function init(sidebar) {
   });
   
   $('.create-note').click(function () {
-    var data = {
-      authToken: authToken,
-      title: companyName,
-      body: $('.evernote-body').val()
-    };
-
     $.ajax({
       url: 'http://localhost:1337/note',
       type: 'POST',
-      data: data
+      data: {
+        authToken: authToken,
+        title: companyName,
+        body: $('.evernote-body').val()
+      }
     });
   });
 }
@@ -120,14 +118,22 @@ function evernoteSuccess(data) {
     for (var i = 0; i < vars.length; i++) {
       var y = vars[i].split('=');
       if (y[0] === 'oauth_token') {
-        authToken = decodeURIComponent(y[1]);
-        chrome.storage.sync.set({'auth_token': decodeURIComponent(y[1])}, function () {});
+        authToken = y[1];
+        chrome.storage.sync.set({'auth_token': y[1]}, function () {});
       }
     }
 
     $('.authorize-evernote').hide();
     $('.evernote-body').show();
     $('.create-note').show();
+
+    $.ajax({
+      url: 'http://localhost:1337/note?authToken=' + authToken  + '&companyName=' + companyName,
+      type: 'GET',
+      success: function (data) {
+        console.log(data);
+      }
+    });
   }
 }
 
@@ -181,9 +187,16 @@ function FillCrunchbaseData(data) {
   AddCrunchbaseNews(data);
   AddHQWeather(data);
 
-
   companyName = return_object['name'];
   $('.evernote-title').val(companyName);
+
+  $.ajax({
+    url: 'http://localhost:1337/note?authToken=' + authToken + '&companyName=' + companyName,
+    type: 'GET',
+    success: function (data) {
+      console.log(data);
+    }
+  });
 }
 
 function AddCrunchbaseNews(data) {
@@ -211,7 +224,7 @@ function AddHQWeather(data) {
     var state = hq['region'];
     var city = hq['city'];
     getCurrentWeather(state, city);
-  } catch(err) {}
+  } catch (err) {}
 }
 
 function getCurrentWeather(state, city) {

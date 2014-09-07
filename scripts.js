@@ -6,10 +6,19 @@ function start(sidebar) {
     + '"); }';
   document.head.appendChild(fa);
   $('body').prepend(sidebar);
+  var effect = 'slide';
+  var options = { direction: 'left' };
+  var duration = 500;
+  $('.cb-sidebar').toggle(effect, options, duration);
   $('.cb-sidebar-close').click(function(){
     $('.cb-sidebar').remove();
   });
+  $('.cb-authorize-evernote').click(function(){
+    authorizeEvernote();
+  });
+}
 
+function authorizeEvernote() {
   var hostName = 'https://sandbox.evernote.com';
   var options = {
       consumerKey: 'dkman94',

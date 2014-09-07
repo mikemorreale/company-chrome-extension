@@ -52,3 +52,7 @@
 .cb-newsTable{
 	font-size:10px!important;
 }
+
+.wu-cb-styles a:hover{
+	text-decoration: none!important;
+}

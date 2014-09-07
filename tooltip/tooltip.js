@@ -108,7 +108,7 @@ function CreateCrunchbaseHTML(companyObj){
                    html += '<tr><td><b>Employees</b></td><td class="pull-right">' + companyObj['numberOfEmployees'] + '</td></tr>';
                 html += '<tr><td><b>Founded On </b></td><td class="pull-right">' + companyObj['foundedOn'] + '</td></tr>';
                 html += '<tr><td><b>Funding (USD) </b></td><td class="pull-right">' + companyObj['totalFundingUSD'] + '</td></tr>';
-                html += '<tr><td><b>Headquarters </b></td><td class="pull-right"> ' + companyObj['hqLocation'] + '</td></tr>';
+                html += '<tr><td><b>Headquarters </b></td><td class="pull-right"><div class="cb-hq-text"> ' + companyObj['hqLocation'] + '</div></td></tr>';
                 html += '<tr><td><b>Categories </b></td><td class="pull-right"> ' + companyObj['categories'] + '</td></tr>';
                 html += '</table>';
 

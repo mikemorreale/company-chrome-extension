@@ -185,6 +185,7 @@ function FillCrunchbaseData(data) {
 	$(".companyImgdiv").remove();
 	$(".cb-title-info").remove();
 	AddCrunchbaseNews(data);
+	AddHQWeather(data);
 }
 
 function AddCrunchbaseNews(data) {
@@ -199,4 +200,34 @@ function AddCrunchbaseNews(data) {
 	});
 	press_table+= '</table>';
 	$('.cb-loaded-data').append(press_table);
+}
+
+function AddHQWeather(data) {
+	try{
+		var hq = data['data']['relationships']['headquarters']['items'][0];
+		var state = hq['region'];
+		var city = hq['city'];
+		getCurrentWeather(state, city);
+    } catch(err) {
+
+    }
+}
+
+function getCurrentWeather(state, city) {
+	var url = 'http://api.wunderground.com/api/15b4b28fc860cf69/conditions/q/'+ state +'/' + city + '.json';
+	$.ajax({ 
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		success: function(data) {
+			console.log(data);
+			var weather = data['current_observation'];
+			var icon_url = weather['icon_url'];
+			var current_temp = weather['temp_f'];
+			var forecast_url = weather['forecast_url'];
+			var weather_html = '<img src="' + icon_url + '" style="width:25px;vertical-align:middle;"/>';
+			weather_html += '<a href="' + forecast_url + '" target="_blank" class="wu-cb-styles">&nbsp;' + current_temp + '&#176;&nbsp; by <img src="http://icons.wxug.com/graphics/wu2/logo_130x80.png" style="width:25px;vertical-align:middle;"></a> ';
+			$(".cb-hq-text").parent().append(weather_html);
+		}
+	});
 }

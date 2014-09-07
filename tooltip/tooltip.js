@@ -71,7 +71,7 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                    
                    // tooltip will appear under mouse.  when mouse moves off of tooltip it will disappear.. this allows link to be clickable
                    $('.companyTooltip').hover(function(event) {}, function(event) {
-                      //$('.companyTooltip').remove(); // called on hoverOut
+                      $('.companyTooltip').remove(); // called on hoverOut
                    });   
                });
          }     

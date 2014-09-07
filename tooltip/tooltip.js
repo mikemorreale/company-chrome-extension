@@ -56,7 +56,7 @@ function SetupChromeExtension() {
 
         // tooltip will appear under mouse.  when mouse moves off of tooltip it will disappear.. this allows link to be clickable
         $('.companyTooltip').hover(function(event) {}, function(event) {
-          // $('.companyTooltip').remove(); // called on hoverOut
+           $('.companyTooltip').remove(); // called on hoverOut
         });   
     });
 }     
@@ -86,7 +86,7 @@ function CreateCrunchbaseHTML(companyObj){
   html += '<p class="cb-title-info"><b><font size="+1">' + companyObj['name'] + '</font></b>' + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="' + companyObj['crunchbaseLink'] + '" target="_blank">(CB)</a>' + '</p>';
   html += '<p class="cb-title-info"><a href="' + companyObj['homepageURL'] + '" target="_blank">' + companyObj['homepageURL'] + '</a></p>';
   html += '<p class="cb-description-text">"' + companyObj['description'] + '"</p></center>';
-  html += '<table cellspacing=8>';
+  html += '<table cellspacing=8 class="cb-crunchbase-info-table">';
   if (companyObj['numberOfEmployees']) {
     html += '<tr><td><b>Employees</b></td><td class="pull-right">' + companyObj['numberOfEmployees'] + '</td></tr>';
   }

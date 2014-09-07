@@ -1,4 +1,5 @@
 var evernoteHostName = 'https://sandbox.evernote.com';
+
 var oauth = OAuth({
   consumerKey: 'dkman94-0573',
   consumerSecret: '6c5908415ba011a9',
@@ -8,7 +9,7 @@ var oauth = OAuth({
 
 var authToken;
 chrome.storage.sync.get('auth_token', function (data) {
-  authToken = data;
+  authToken = data['auth_token'];
 });
 
 var companyName;
@@ -20,6 +21,7 @@ function init(sidebar) {
 
   if (authToken) {
     $('.authorize-evernote').hide();
+    $('.evernote-body').show();
     $('.create-note').show();
   } else {
     evernoteSetup();
@@ -124,6 +126,7 @@ function evernoteSuccess(data) {
     }
 
     $('.authorize-evernote').hide();
+    $('.evernote-body').show();
     $('.create-note').show();
   }
 }
@@ -133,7 +136,6 @@ function evernoteFailure(error) {
 }
 
 function getCrunchbaseFromUrl(url_query) {
-  console.log('getting compnay url',url_query);
   var apiKey = 'a554e04effee9e09ee61679a344041c2';
   var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organizations?domain_name=';
   var lookupUrlPrefix2 = 'http://api.crunchbase.com/v/2/';
@@ -145,13 +147,11 @@ function getCrunchbaseFromUrl(url_query) {
     success: function (data) {
       // if found for URL, go get the actual data
       try {
-        var path = data['data']['items'][0]['path']
-        console.log('search data',data);
+        var path = data['data']['items'][0]['path'];
       } catch (err) {
         var path = 0;
       }
       if (path === 0) {
-        console.log('no path found');
         // NOT FOUND
       } else {
         var url2 = lookupUrlPrefix2 + path + '?user_key=' + apiKey;
@@ -160,7 +160,6 @@ function getCrunchbaseFromUrl(url_query) {
           type: 'GET',
           dataType: 'json',
           success: function (data) {
-            console.log('company data',data);
             FillCrunchbaseData(data);
           }
         });
@@ -173,7 +172,6 @@ function FillCrunchbaseData(data) {
   $('.cb-loading-circle').hide();
 
   var return_object = ParseCrunchbaseData(data);
-  console.log('return obj',return_object);
   var final_html = CreateCrunchbaseHTML(return_object);
   
   $(".cb-loaded-data").html(final_html);

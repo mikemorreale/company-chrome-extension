@@ -15,8 +15,8 @@
     "page": "background.html"
   },
   "content_scripts": [{
-    "css": ["css/main.css", "bower_components/font-awesome/css/font-awesome.min.css"],
-    "js": ["bower_components/jquery/dist/jquery.js", "bower_components/bootstrap/dist/js/bootstrap.min.js", "lib/jsOAuth-1.3.6.min.js", "scripts.js"],
+    "css": ["css/main.css", "bower_components/font-awesome/css/font-awesome.min.css", "tooltip/tooltip.css"],
+    "js": ["bower_components/jquery/dist/jquery.js", "bower_components/bootstrap/dist/js/bootstrap.min.js", "lib/jsOAuth-1.3.6.min.js", "scripts.js", "tooltip/companyNames.js", "tooltip/tooltip.js"],
     "matches": ["http://*/*", "https://*/*"]
   }],
   "web_accessible_resources":[

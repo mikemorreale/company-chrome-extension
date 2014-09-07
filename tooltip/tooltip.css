@@ -1,0 +1,29 @@
+         .companyTooltip {
+            display: none;
+            font-size: 10pt;
+            font-family: Arial;
+            position: absolute;
+            border: 1px solid #000000;
+            background-color: #CCCCCC;
+            padding: 5px 10px;
+            width: 275px;
+            color: black;
+         }
+
+         .companyTooltip table {
+            font-size: 10pt;
+         }
+         .companyTooltip td {
+            vertical-align: top;
+         }
+
+         .companyTooltip img {
+            width: 100px;
+         }
+
+         .companyImgdiv {
+            background-color: white;
+            border: 1px solid;
+            padding: 10px;
+            width: 150px;
+         }

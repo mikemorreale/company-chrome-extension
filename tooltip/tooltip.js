@@ -14,11 +14,11 @@ function SetupChromeExtension() {
   var page_text = $('body').text();
 
   var all_words_on_page = getText("p");
-  $.each(all_words_on_page, function(index, value){
+  $.each(all_words_on_page, function (index, value) {
     var is_in_array = companyNames.indexOf(value);
-    if (is_in_array != -1) {
+    if (is_in_array !== -1) {
       var is_in_final_co_array = final_company_names_on_page.indexOf(value);
-      if (is_in_final_co_array == -1) {
+      if (is_in_final_co_array === -1) {
         final_company_names_on_page.push(value);
       }
     }

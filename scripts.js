@@ -13,10 +13,11 @@ function init(sidebar) {
   $('body').prepend(sidebar);
 
   getCrunchbaseFromUrl(window.location.hostname);
+  getWayBackData(window.location.hostname);
 
   setTimeout(function () {
     $('.cb-sidebar').removeClass('hidden');
-  }, 200);
+  }, 50);
 
   $('.cb-sidebar-close').click(function () {
     $('.cb-sidebar').addClass('hidden');
@@ -205,4 +206,11 @@ function getCurrentWeather(state, city) {
       $(".cb-hq-text").parent().append(weather_html);
     }
   });
+}
+
+function getWayBackData(url) {
+  var timestamp = "20140101";
+  var url = "http://web.archive.org/web/" + url;
+  var link_html = '<div class="cb-header"><a href="' + url + '" target="blank">Way Back Machine history</a></div>';
+  $("#cb-wayback-info").append(link_html);
 }

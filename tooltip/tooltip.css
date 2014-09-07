@@ -27,3 +27,10 @@
             padding: 10px;
             width: 150px;
          }
+
+.CompanyExt{
+   border: 1px #ccc solid;
+   padding: 3px;
+   border-radius: 3px;
+   background: #FBFFB7;
+}

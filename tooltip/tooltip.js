@@ -9,11 +9,34 @@ var apiKey = 'a554e04effee9e09ee61679a344041c2';
 var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
           
          function SetupChromeExtension() {
+            var final_company_names_on_page = []
             console.log('started setup');
               // Load company info for company names on page from Crunchbase 
-            for (i = 0; i < 100; i++) { 
+
+            var page_text = $('body').text();
+
+            //console.log(page_text);
+
+            var all_words_on_page = getText("p");
+            //console.log(all_words_on_page);
+            $.each(all_words_on_page, function(index, value){
+              //console.log(value);
+              var is_in_array = companyNames.indexOf(value);
+              if (is_in_array != -1) {
+                //console.log(is_in_array);
+                //console.log(value);
+                var is_in_final_co_array = final_company_names_on_page.indexOf(value);
+                if (is_in_final_co_array == -1) {
+                  final_company_names_on_page.push(value);
+                }
+              }
+            });
+
+            console.log(final_company_names_on_page);
+
+            $.each(final_company_names_on_page, function(index, value) { 
               console.log('looping');
-               company = companyNames[i];
+               company = value;
                var foundin = $('p:contains(' + company + ')');
                /*if (foundin.length) {
 
@@ -24,13 +47,13 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                }
                */
                foundin.each(function(index, value){
-                console.log(value);
+                //console.log(value);
                   var replaced = $(value).html()
-                       .replace(new RegExp(company, 'g'), '<span class="CompanyExt" CompanyName="' + company + '"><u>' + company + '</u></span>');
+                       .replace(new RegExp(company, 'g'), '<span class="CompanyExt" CompanyName="' + company + '">' + company + '</span>');
                   $(value).html(replaced);
                   LoadCompanyInfo(company);
                });
-            }
+            });
 
             console.log('finished looping');
 
@@ -103,10 +126,25 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                 c['totalFundingUSD'] = c['totalFundingUSD'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
              }
              c['imageURL'] = data['metadata']['image_path_prefix'] + data['data']['relationships']['primary_image']['items'][0]['path'];
-             var hq = data['data']['relationships']['headquarters']['items'][0];
+             try {
+               var hq = data['data']['relationships']['headquarters']['items'][0];
+             } catch(err) {
+              var hq = '';
+             }
              c['hqLocation'] = hq['city'] + ', ' + hq['region'];
              var categories = data['data']['relationships']['categories']['items'];
              c['categories'] = $.map(categories, function (val, i) { return val['name']; }).join(', ');
              
              return c;
          }
+
+
+function getText(target) {
+    var wordArr = [];
+    $('*',target).add(target).each(function(k,v) {
+        var words  = $('*',v.cloneNode(true)).remove().end().text().split(/(\s+|\n)/);
+        wordArr = wordArr.concat(words.filter(function(n){
+          return n.trim()}));
+    });
+    return wordArr;
+}

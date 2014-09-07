@@ -133,8 +133,9 @@ function evernoteFailure(error) {
 }
 
 function getCrunchbaseFromUrl(url_query) {
+  console.log('getting compnay url',url_query);
   var apiKey = 'a554e04effee9e09ee61679a344041c2';
-  var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organizations?query=';
+  var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organizations?domain_name=';
   var lookupUrlPrefix2 = 'http://api.crunchbase.com/v/2/';
   var url = lookupUrlPrefix + url_query + '&user_key=' + apiKey;
   $.ajax({ 
@@ -145,10 +146,12 @@ function getCrunchbaseFromUrl(url_query) {
       // if found for URL, go get the actual data
       try {
         var path = data['data']['items'][0]['path']
+        console.log('search data',data);
       } catch (err) {
         var path = 0;
       }
       if (path === 0) {
+        console.log('no path found');
         // NOT FOUND
       } else {
         var url2 = lookupUrlPrefix2 + path + '?user_key=' + apiKey;
@@ -157,6 +160,7 @@ function getCrunchbaseFromUrl(url_query) {
           type: 'GET',
           dataType: 'json',
           success: function (data) {
+            console.log('company data',data);
             FillCrunchbaseData(data);
           }
         });
@@ -169,6 +173,7 @@ function FillCrunchbaseData(data) {
   $('.cb-loading-circle').hide();
 
   var return_object = ParseCrunchbaseData(data);
+  console.log('return obj',return_object);
   var final_html = CreateCrunchbaseHTML(return_object);
   
   $(".cb-loaded-data").html(final_html);
@@ -177,6 +182,7 @@ function FillCrunchbaseData(data) {
 
   AddCrunchbaseNews(data);
   AddHQWeather(data);
+
 
   companyName = return_object['name'];
   $('.evernote-title').val(companyName);

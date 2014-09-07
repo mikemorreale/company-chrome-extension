@@ -23,8 +23,8 @@ function start(sidebar) {
 function authorizeEvernote() {
   var hostName = 'https://sandbox.evernote.com';
   var options = {
-      consumerKey: 'dkman94',
-      consumerSecret: '2a889a8b19a049f6',
+      consumerKey: 'dkman94-0573',
+      consumerSecret: '6c5908415ba011a9',
       callbackUrl : 'gotOAuth.html',
       signatureMethod : 'HMAC-SHA1',
   };

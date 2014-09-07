@@ -1,3 +1,19 @@
 .test {
   color: red;
 }
+
+.cb-sidebar{
+	z-index: 999999999;
+	background: #ccc;
+	position: fixed;
+	right: 0;
+	width: 300px;
+	height: 100%;
+}
+
+.cb-sidebar-close{
+	position: absolute;
+	right: 0;
+	top: 0;
+	cursor: pointer;
+}

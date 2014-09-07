@@ -1,13 +1,20 @@
          .companyTooltip {
             display: none;
+            z-index:999999999;
             font-size: 10pt;
             font-family: Arial;
             position: absolute;
-            border: 1px solid #000000;
-            background-color: #CCCCCC;
             padding: 5px 10px;
             width: 275px;
             color: black;
+            line-height: normal;
+            background: rgba(240, 240, 240, 0.9);
+            border: 1px #ccc solid;
+            border-radius: 10px;
+         }
+
+         .companyTooltip  p {
+            margin: 3px;
          }
 
          .companyTooltip table {
@@ -18,12 +25,11 @@
          }
 
          .companyTooltip img {
-            width: 100px;
+            max-width: 100px;
+            max-height: 75px;
          }
 
          .companyImgdiv {
-            background-color: white;
-            border: 1px solid;
             padding: 10px;
             width: 150px;
          }

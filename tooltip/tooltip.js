@@ -49,10 +49,10 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                foundin.each(function(index, value){
                 //console.log(value);
                   var replaced = $(value).html()
-                       .replace(new RegExp(company, 'g'), '<span class="CompanyExt" CompanyName="' + company + '">' + company + '</span>');
+                       .replace(new RegExp(' ' + company + ' ', 'g'), '<span class="CompanyExt" CompanyName="' + company + '">' + company + '</span>');
                   $(value).html(replaced);
-                  LoadCompanyInfo(company);
                });
+               LoadCompanyInfo(company);
             });
 
             console.log('finished looping');
@@ -60,7 +60,7 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
             // Load tooltip with company info for each company
             $('.CompanyExt').hover(
                function(event) {
-                  console.log('hovering');
+                  //console.log('hovering');
                   $('.companyTooltip').remove(); 
                   var companyName = $(this).attr('CompanyName');
                   $('<span class="companyTooltip"></span>').html(companyTooltipInfo[companyName])
@@ -70,8 +70,8 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
                      .fadeIn('fast');
                    
                    // tooltip will appear under mouse.  when mouse moves off of tooltip it will disappear.. this allows link to be clickable
-                   $('.companyTooltip').hover(function(event) {console.log('hovering 2');}, function(event) {
-                      $('.companyTooltip').remove(); // called on hoverOut
+                   $('.companyTooltip').hover(function(event) {}, function(event) {
+                      //$('.companyTooltip').remove(); // called on hoverOut
                    });   
                });
          }     
@@ -113,26 +113,80 @@ var lookupUrlPrefix = 'http://api.crunchbase.com/v/2/organization/';
              
              var properties = data['data']['properties']; 
 
+             try {
              c['name'] = properties['name'];
+             } catch(err) {
+               c['name'] = '';
+             }
+             
+             try {
              c['description'] =  properties['short_description'];
+             } catch(err) {
+               c['description'] = '';
+             }
+             
+             try {
              c['homepageURL'] =  properties['homepage_url'];
+             } catch(err) {
+               c['homepageURL'] = '';
+             }
+             
+             try {
              c['foundedOn'] =  properties['founded_on'];
+             } catch(err) {
+               c['foundedOn'] = '';
+             }
+             
+             try {
              c['numberOfEmployees'] = properties['number_of_employees'];
+             } catch(err) {
+               c['numberOfEmployees'] = '';
+             }
+             
+             try {
              if (c['numberOfEmployees']) {
                 c['numberOfEmployees'] = c['numberOfEmployees'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
              }
+              } catch(err) {
+               c['numberOfEmployees'] = '';
+             }
+
+             
+             try {
              c['totalFundingUSD'] = properties['total_funding_usd'];
+             } catch(err) {
+               c['totalFundingUSD'] = '';
+             }
+             
+             try {
              if (c['totalFundingUSD']) {
                 c['totalFundingUSD'] = c['totalFundingUSD'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
              }
+             } catch(err) {
+               c['totalFundingUSD'] = '';
+             }
+
+             try {
              c['imageURL'] = data['metadata']['image_path_prefix'] + data['data']['relationships']['primary_image']['items'][0]['path'];
+             } catch(err) {
+               c['imageURL'] = '';
+             }
+
+
              try {
                var hq = data['data']['relationships']['headquarters']['items'][0];
              } catch(err) {
               var hq = '';
              }
+
+             try {
              c['hqLocation'] = hq['city'] + ', ' + hq['region'];
+             } catch(err) {
+               c['hqLocation'] = '';
+             }
+             
              var categories = data['data']['relationships']['categories']['items'];
+             
              c['categories'] = $.map(categories, function (val, i) { return val['name']; }).join(', ');
              
              return c;

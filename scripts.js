@@ -6,10 +6,7 @@ function start(sidebar) {
     + '"); }';
   document.head.appendChild(fa);
   $('body').prepend(sidebar);
-  var effect = 'slide';
-  var options = { direction: 'left' };
-  var duration = 500;
-  $('.cb-sidebar').toggle(effect, options, duration);
+  $('.cb-sidebar').show();
   $('.cb-sidebar-close').click(function(){
     $('.cb-sidebar').remove();
   });
